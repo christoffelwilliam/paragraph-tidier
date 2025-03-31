@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Paragraph Tidier</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f7fa;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #7f8c8d;
+            margin-bottom: 30px;
+        }
+        
+        .container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .text-areas {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .text-box {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        textarea {
+            width: 100%;
+            height: 300px;
+            padding: 15px;
+            box-sizing: border-box;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            resize: vertical;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        
+        button:hover {
+            background-color: #2980b9;
+        }
+        
+        .copy-btn {
+            background-color: #2ecc71;
+        }
+        
+        .copy-btn:hover {
+            background-color: #27ae60;
+        }
+        
+        .clear-btn {
+            background-color: #e74c3c;
+        }
+        
+        .clear-btn:hover {
+            background-color: #c0392b;
+        }
+        
+        h2 {
+            color: #2c3e50;
+            margin-top: 30px;
+        }
+        
+        .instructions, .features, .options, .examples, .footer {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        
+        .features ul, .examples ul {
+            padding-left: 20px;
+        }
+        
+        .status {
+            text-align: center;
+            margin-top: 10px;
+            font-style: italic;
+            color: #7f8c8d;
+            min-height: 20px;
+        }
+        
+        .options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: space-between;
+        }
+        
+        .option-group {
+            flex: 1;
+            min-width: 250px;
+        }
+        
+        .option-group h3 {
+            margin-top: 0;
+            color: #2c3e50;
+        }
+        
+        .checkbox-option {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .checkbox-option input {
+            margin-right: 10px;
+        }
+        
+        .example-btn {
+            background-color: #9b59b6;
+            margin: 5px;
+        }
+        
+        .example-btn:hover {
+            background-color: #8e44ad;
+        }
+        
+        .file-input-container {
+            margin-top: 10px;
+        }
+        
+        .file-input {
+            margin-top: 5px;
+        }
+        
+        .footer {
+            text-align: center;
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+        
+        .tab-container {
+            margin-bottom: 20px;
+        }
+        
+        .tab-buttons {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .tab-button {
+            padding: 10px 20px;
+            background-color: #f5f7fa;
+            border: none;
+            border-radius: 5px 5px 0 0;
+            cursor: pointer;
+            margin-right: 5px;
+        }
+        
+        .tab-button.active {
+            background-color: #3498db;
+            color: white;
+        }
+        
+        .tab-content {
+            display: none;
+            padding: 20px;
+            background-color: white;
+            border-radius: 0 0 5px 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .dark-mode {
+            background-color: #2c3e50;
+            color: #ecf0f1;
+        }
+        
+        .dark-mode .instructions, .dark-mode .features, .dark-mode .options, 
+        .dark-mode .examples, .dark-mode .footer, .dark-mode .tab-content {
+            background-color: #34495e;
+            color: #ecf0f1;
+        }
+        
+        .dark-mode h1, .dark-mode h2, .dark-mode h3 {
+            color: #ecf0f1;
+        }
+        
+        .dark-mode textarea {
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            border-color: #1a2530;
+        }
+        
+        .theme-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: #f39c12;
+        }
+        
+        .theme-toggle:hover {
+            background-color: #d35400;
+        }
+        
+        @media (max-width: 768px) {
+            .text-areas {
+                flex-direction: column;
+            }
+            
+            .buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            button {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Advanced Paragraph Tidier</h1>
+    <p class="subtitle">Clean and format text from PDFs and other sources for optimal use with AI tools</p>
+    <button id="theme-toggle" class="theme-toggle">Toggle Dark Mode</button>
+    
+    <div class="container">
+        <div class="tab-container">
+            <div class="tab-buttons">
+                <button class="tab-button active" data-tab="basic">Basic</button>
+                <button class="tab-button" data-tab="advanced">Advanced Options</button>
+                <button class="tab-button" data-tab="batch">Batch Processing</button>
+                <button class="tab-button" data-tab="about">About</button>
+            </div>
+            
+            <div id="basic-tab" class="tab-content active">
+                <div class="instructions">
+                    <p>Paste your text from PDF or any source with messy formatting into the left box, then click "Tidy Paragraph" to clean it up.</p>
+                </div>
+                
+                <div class="text-areas">
+                    <div class="text-box">
+                        <h3>Input Text:</h3>
+                        <textarea id="input-text" placeholder="Paste your messy text here..."></textarea>
+                    </div>
+                    <div class="text-box">
+                        <h3>Tidied Text:</h3>
+                        <textarea id="output-text" placeholder="Your tidied text will appear here..." readonly></textarea>
+                    </div>
+                </div>
+                
+                <div class="buttons">
+                    <button id="tidy-btn">Tidy Paragraph</button>
+                    <button id="copy-btn" class="copy-btn">Copy to Clipboard</button>
+                    <button id="clear-btn" class="clear-btn">Clear All</button>
+                </div>
+                
+                <div id="status" class="status"></div>
+            </div>
+            
+            <div id="advanced-tab" class="tab-content">
+                <div class="options">
+                    <div class="option-group">
+                        <h3>Whitespace Options</h3>
+                        <div class="checkbox-option">
+                            <input type="checkbox" id="normalize-whitespace" checked>
+                            <label for="normalize-whitespace">Normalize whitespace (replace multiple spaces with single space)</label>
+                        </div>
+                        <div class="checkbox-option">
+                            <input type="checkbox" id="remove-line-breaks" checked>
+                            <label for="remove-line-breaks">Remove line breaks within paragraphs</label>
+                        </div>
+                        <div class="checkbox-option">
+                            <input type="checkbox" id="trim-spaces" checked>
+                            <label for="trim-spaces">Trim leading and trailing spaces</label>
+                        </div>
+                    </div>
+                    
+                    <div class="option-group">
+                        <h3>Text Structure</h3>
+                        <div class="checkbox-option">
+                            <input type="checkbox" id="preserve-paragraphs">
+                            <label for="preserve-paragraphs">Preserve paragraph breaks (double line breaks)</label>
+                        </div>
+                        <div class="checkbox-option">
+                            <input type="checkbox" id="merge-short-lines">
+                            <label for="merge-short-lines">Merge short lines (likely broken mid-sentence)</label>
+                        </div>
+                        <div class="checkbox-option">
+                            <input type="checkbox" id="fix-hyphens">
+                            <label for="fix-hyphens">Fix hyphenated words at line breaks</label>
+                        </div>
+                    </div>
+                    
+                    <div class="option-group">
+                        <h3>Special Characters</h3>
+                        <div class="checkbox-option">
+                            <input type="checkbox" id="fix-quotes">
+                            <label for="fix-quotes">Normalize quotes (convert curly/straight quotes)</label>
+                        </div>
+                        <div class="checkbox-option">
+                            <input type="checkbox" id="fix-dashes">
+                            <label for="fix-dashes">Normalize dashes (convert em/en dashes)</label>
+                        </div>
+                        <div class="checkbox-option">
+                            <input type="checkbox" id="remove-special">
+                            <label for="remove-special">Remove control characters</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="batch-tab" class="tab-content">
+                <h3>Batch Process Multiple Paragraphs</h3>
+                <p>Upload a text file or paste multiple paragraphs separated by blank lines.</p>
+                
+                <div class="file-input-container">
+                    <p>Upload a text file:</p>
+                    <input type="file" id="file-input" class="file-input" accept=".txt,.text,.md">
+                </div>
+                
+                <div class="checkbox-option">
+                    <input type="checkbox" id="separate-output" checked>
+                    <label for="separate-output">Keep paragraphs separated in output</label>
+                </div>
+                
+                <button id="batch-process-btn">Process File/Batch</button>
+            </div>
+            
+            <div id="about-tab" class="tab-content">
+                <h2>About Paragraph Tidier</h2>
+                <p>This tool was created to solve the common problem of formatting issues when copying text from PDFs and other sources into AI tools like ChatGPT, Claude, or Bard.</p>
+                
+                <h3>How It Works</h3>
+                <p>The Paragraph Tidier uses advanced text processing techniques to:</p>
+                <ul>
+                    <li>Remove unnecessary line breaks while preserving paragraph structure</li>
+                    <li>Normalize whitespace characters (spaces, tabs, etc.)</li>
+                    <li>Fix common formatting issues from PDFs and scanned documents</li>
+                    <li>Make text ready for AI processing without formatting distractions</li>
+                </ul>
+                
+                <h3>Privacy</h3>
+                <p>All processing happens in your browser. No text is ever sent to a server, ensuring complete privacy of your content.</p>
+                
+                <h3>Open Source</h3>
+                <p>This tool is open source and can be modified or extended for your specific needs.</p>
+            </div>
+        </div>
+        
+        <div class="examples">
+            <h2>Example Texts</h2>
+            <p>Click on an example to see how the tidier works with different types of text:</p>
+            <div class="buttons">
+                <button class="example-btn" data-example="scientific">Scientific Paper</button>
+                <button class="example-btn" data-example="literature">Literature</button>
+                <button class="example-btn" data-example="columns">Multi-Column Text</button>
+                <button class="example-btn" data-example="lists">Bulleted Lists</button>
+            </div>
+        </div>
+        
+        <div class="features">
+            <h2>Features:</h2>
+            <ul>
+                <li>Advanced whitespace normalization</li>
+                <li>Smart paragraph detection and preservation</li>
+                <li>Hyphenation fixing at line breaks</li>
+                <li>Special character normalization</li>
+                <li>Batch processing for multiple paragraphs or files</li>
+                <li>Dark mode for comfortable night reading</li>
+                <li>Completely private - all processing done in your browser</li>
+                <li>Responsive design for desktop and mobile</li>
+            </ul>
+        </div>
+        
+        <div class="footer">
+            <p>Paragraph Tidier - Making text clean and AI-ready</p>
+            <p>Created 2025 | <a href="#" id="export-link">Download as HTML</a></p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Core elements
+            const inputText = document.getElementById('input-text');
+            const outputText = document.getElementById('output-text');
+            const tidyBtn = document.getElementById('tidy-btn');
+            const copyBtn = document.getElementById('copy-btn');
+            const clearBtn = document.getElementById('clear-btn');
+            const status = document.getElementById('status');
+            const fileInput = document.getElementById('file-input');
+            const batchProcessBtn = document.getElementById('batch-process-btn');
+            const themeToggle = document.getElementById('theme-toggle');
+            const exportLink = document.getElementById('export-link');
+            
+            // Tab navigation
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            tabButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const tabId = this.dataset.tab;
+                    
+                    // Remove active class from all buttons and contents
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    tabContents.forEach(content => content.classList.remove('active'));
+                    
+                    // Add active class to clicked button and corresponding content
+                    this.classList.add('active');
+                    document.getElementById(`${tabId}-tab`).classList.add('active');
+                });
+            });
+            
+            // Example texts
+            const examples = {
+                scientific: `An enzyme is a biomolecule capable of catalyzing a biological reaction. These
+proteins can be detected using immunohistochemistry. However, another
+method to detect enzymes is to use the enzyme's endogenous activity to create
+a visible reaction productda process known as enzymatic histochemistry.
+The scientist incubates a brain section in a solution containing a chromogenic
+chemical capable of serving as a substrate for the enzyme. A colored byproduct
+indicates the presence of the enzyme. For example, endogenous
+acetylcholinesterase (the enzyme that breaks down acetylcholine) is often used
+as a marker for acetylcholine in brain sections. Another commonly detected
+enzyme is cytochrome oxidase, which aids in visualizing metabolically active
+neurons, such as whisker barrels in the rodent sensory cortex`,
+                
+                literature: `It was the best of times, it was the worst of times, it was the age of wisdom,
+it was the age of foolishness, it was the epoch of belief, it was the epoch of incredulity,
+it was the season of Light, it was the season of Darkness, it was the spring of hope,
+it was the winter of despair, we had everything before us, we had nothing before us, we
+were all going direct to Heaven, we were all going direct the other way—in short, the period
+was so far like the present period, that some of its noisiest authorities insisted on its
+being received, for good or for evil, in the superlative degree of comparison only.`,
+                
+                columns: `Functional         Structural
+connectivity      connectivity
+-----------       -------------
+Measures          Measures physical
+statistical       connections
+dependencies      between neural
+between           elements (e.g.
+spatially         synapses, axonal
+segregated        projections)
+brain regions     
+                  
+Can be            Based on
+estimated from    anatomical
+time-series of    studies
+brain activity`,
+                
+                lists: `Benefits of Regular Exercise:
+• Improves cardiovascular health
+• Strengthens muscles and bones
+• Helps with weight management
+• Reduces stress and anxiety
+• Boosts mood and energy levels
+• Improves sleep quality
+• Enhances cognitive function
+• Increases longevity`
+            };
+            
+            // Set example text
+            inputText.value = examples.scientific;
+            
+            // Example buttons
+            const exampleButtons = document.querySelectorAll('.example-btn');
+            exampleButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const exampleType = this.dataset.example;
+                    inputText.value = examples[exampleType];
+                    status.textContent = `Loaded ${exampleType} example`;
+                    setTimeout(() => { status.textContent = ''; }, 3000);
+                });
+            });
+            
+            // Core functionality - tidy paragraph
+            function tidyParagraph(paragraph, options = {}) {
+                // Default options
+                const defaultOptions = {
+                    normalizeWhitespace: true,
+                    removeLineBreaks: true,
+                    trimSpaces: true,
+                    preserveParagraphs: false,
+                    mergeShortLines: false,
+                    fixHyphens: false,
+                    fixQuotes: false,
+                    fixDashes: false,
+                    removeSpecial: false
+                };
+                
+                // Merge default options with provided options
+                const settings = {...defaultOptions, ...options};
+                
+                // Preserve paragraphs if needed (before other processing)
+                if (settings.preserveParagraphs) {
+                    // Replace double line breaks with a special marker
+                    paragraph = paragraph.replace(/\n\s*\n/g, '\n\u2029\n');
+                }
+                
+                // Fix hyphenated words at line breaks
+                if (settings.fixHyphens) {
+                    // Look for words hyphenated across lines
+                    paragraph = paragraph.replace(/(\w+)-\s*\n\s*(\w+)/g, '$1$2');
+                }
+                
+                // Merge short lines (likely broken mid-sentence)
+                if (settings.mergeShortLines) {
+                    // Replace line breaks that don't follow punctuation with spaces
+                    paragraph = paragraph.replace(/([^.!?:])\s*\n\s*/g, '$1 ');
+                }
+                
+                // Remove line breaks within paragraphs
+                if (settings.removeLineBreaks) {
+                    // Replace single line breaks with spaces
+                    paragraph = paragraph.replace(/(?<!\n)\n(?!\n)/g, ' ');
+                }
+                
+                // Normalize whitespace
+                if (settings.normalizeWhitespace) {
+                    // Replace all whitespace characters with a single space
+                    paragraph = paragraph.replace(/\s+/g, ' ');
+                }
+                
+                // Fix quotes
+                if (settings.fixQuotes) {
+                    // Normalize various quote styles
+                    paragraph = paragraph.replace(/[\u2018\u2019]/g, "'");
+                    paragraph = paragraph.replace(/[\u201C\u201D]/g, '"');
+                }
+                
+                // Fix dashes
+                if (settings.fixDashes) {
+                    // Normalize various dash styles
+                    paragraph = paragraph.replace(/[\u2013\u2014]/g, '-');
+                }
+                
+                // Remove control characters
+                if (settings.removeSpecial) {
+                    // Remove control characters except line breaks and spaces
+                    paragraph = paragraph.replace(/[\x00-\x09\x0B\x0C\x0E-\x1F\x7F]/g, '');
+                }
+                
+                // Trim leading and trailing spaces
+                if (settings.trimSpaces) {
+                    paragraph = paragraph.trim();
+                }
+                
+                // Restore paragraph breaks if they were preserved
+                if (settings.preserveParagraphs) {
+                    // Replace special marker with double line breaks
+                    paragraph = paragraph.replace(/\u2029/g, '\n\n');
+                }
+                
+                return paragraph;
+            }
+            
+            // Function to get current options from UI
+            function getCurrentOptions() {
+                return {
+                    normalizeWhitespace: document.getElementById('normalize-whitespace').checked,
+                    removeLineBreaks: document.getElementById('remove-line-breaks').checked,
+                    trimSpaces: document.getElementById('trim-spaces').checked,
+                    preserveParagraphs: document.getElementById('preserve-paragraphs').checked,
+                    mergeShortLines: document.getElementById('merge-short-lines').checked,
+                    fixHyphens: document.getElementById('fix-hyphens').checked,
+                    fixQuotes: document.getElementById('fix-quotes').checked,
+                    fixDashes: document.getElementById('fix-dashes').checked,
+                    removeSpecial: document.getElementById('remove-special').checked
+                };
+            }
+            
+            // Process text with current options
+            tidyBtn.addEventListener('click', function() {
+                if (inputText.value.trim() === '') {
+                    status.textContent = 'Please enter some text first.';
+                    setTimeout(() => { status.textContent = ''; }, 3000);
+                    return;
+                }
+                
+                const options = getCurrentOptions();
+                const result = tidyParagraph(inputText.value, options);
+                outputText.value = result;
+                status.textContent = 'Text tidied successfully!';
+                setTimeout(() => { status.textContent = ''; }, 3000);
+            });
+            
+            // Batch processing
+            batchProcessBtn.addEventListener('click', function() {
+                // Check if file is selected
+                if (fileInput.files.length > 0) {
+                    const file = fileInput.files[0];
+                    const reader = new FileReader();
+                    
+                    reader.onload = function(e) {
+                        processMultipleParagraphs(e.target.result);
+                    };
+                    
+                    reader.readAsText(file);
+                } else {
+                    // Process text in the input as multiple paragraphs
+                    processMultipleParagraphs(inputText.value);
+                }
+            });
+            
+            // Process multiple paragraphs
+            function processMultipleParagraphs(text) {
+                const keepSeparate = document.getElementById('separate-output').checked;
+                const options = getCurrentOptions();
+                
+                // Split text into paragraphs
+                const paragraphs = text.split(/\n\s*\n/);
+                
+                // Process each paragraph
+                const processedParagraphs = paragraphs.map(para => tidyParagraph(para, options));
+                
+                // Join with appropriate separator
+                const result = keepSeparate ? processedParagraphs.join('\n\n') : processedParagraphs.join(' ');
+                
+                // Show result
+                outputText.value = result;
+                
+                // Switch to the basic tab to show result
+                tabButtons.forEach(btn => btn.classList.remove('active'));
+                tabContents.forEach(content => content.classList.remove('active'));
+                document.querySelector('[data-tab="basic"]').classList.add('active');
+                document.getElementById('basic-tab').classList.add('active');
+                
+                status.textContent = `Processed ${paragraphs.length} paragraphs!`;
+                setTimeout(() => { status.textContent = ''; }, 3000);
+            }
+            
+            // Copy to clipboard
+            copyBtn.addEventListener('click', function() {
+                if (outputText.value.trim() === '') {
+                    status.textContent = 'No tidied text to copy.';
+                    setTimeout(() => { status.textContent = ''; }, 3000);
+                    return;
+                }
+                
+                outputText.select();
+                
+                // Try the modern clipboard API
+                if (navigator.clipboard) {
+                    navigator.clipboard.writeText(outputText.value)
+                        .then(function() {
+                            status.textContent = 'Copied to clipboard!';
+                            setTimeout(() => { status.textContent = ''; }, 3000);
+                        })
+                        .catch(function() {
+                            // Fall back to execCommand
+                            document.execCommand('copy');
+                            status.textContent = 'Copied to clipboard!';
+                            setTimeout(() => { status.textContent = ''; }, 3000);
+                        });
+                } else {
+                    // Fall back to execCommand for older browsers
+                    document.execCommand('copy');
+                    status.textContent = 'Copied to clipboard!';
+                    setTimeout(() => { status.textContent = ''; }, 3000);
+                }
+            });
+            
+            // Clear all text
+            clearBtn.addEventListener('click', function() {
+                inputText.value = '';
+                outputText.value = '';
+                status.textContent = 'All text cleared.';
+                setTimeout(() => { status.textContent = ''; }, 3000);
+            });
+            
+            // Toggle dark mode
+            themeToggle.addEventListener('click', function() {
+                document.body.classList.toggle('dark-mode');
+                themeToggle.textContent = document.body.classList.contains('dark-mode') 
+                    ? 'Toggle Light Mode' 
+                    : 'Toggle Dark Mode';
+            });
+            
+            // Export the page
+            exportLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Create a blob with the HTML content
+                const htmlContent = document.documentElement.outerHTML;
+                const blob = new Blob([htmlContent], {type: 'text/html'});
+                
+                // Create a link and trigger download
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'paragraph-tidier.html';
+                document.body.appendChild(a);
+                a.click();
+                
+                // Clean up
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            });
+            
+            // Initial tidy of the example text
+            const result = tidyParagraph(examples.scientific);
+            outputText.value = result;
+        });
+    </script>
+</body>
+</html>
