@@ -23,7 +23,7 @@ The **Advanced Paragraph Tidier** is a web-based application designed to clean a
 2. Select the desired options for tidying.
 3. Click the "Tidy Paragraph" button to clean the text.
 4. Use the "Copy to Clipboard" button to copy the tidied text.
-5. Explore batch processing by uploading a text file.
+5. Explore batch processing by uploading a text file. (This feature is still not optimal, more improvement needed)
 
 ## Disclosure
 
