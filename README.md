@@ -4,32 +4,29 @@ A web tool for tidying and formatting text from various sources, created with th
 
 ## Description
 
-The **Advanced Paragraph Tidier** is a web-based application designed to clean and format text extracted from PDFs and other sources. This tool enhances the usability of text for AI applications by removing unnecessary formatting issues.
+The **PDF Text Tidier for AI Chatbots** is a web-based application designed to clean and format text extracted from PDFs and other sources. This tool enhances the usability of text for AI applications by removing unnecessary formatting issues and providing additional features for better interaction with AI chatbots.
 
 ## Features
 
 - Advanced whitespace normalization
 - Smart paragraph detection and preservation
-- Hyphenation fixing at line breaks
-- Special character normalization
-- Batch processing for multiple paragraphs or files
-- Dark mode for comfortable night reading
-- Completely private - all processing done in your browser
-- Responsive design for desktop and mobile
+- Fixing of hyphenated words at line breaks
+- Removal of unnecessary line breaks and normalization of whitespace
+- **New Feature**: AI Prompt Selection
+  - Users can now select multiple prompts to customize the output for AI chatbots, allowing for customized interactions.
+- Improved dark mode for better readability
+- Completely private - all processing is done in the browser
+- Responsive design for desktop and mobile use
 
 ## Usage
 
-1. Paste your messy text into the input area.
-2. Select the desired options for tidying.
-3. Click the "Tidy Paragraph" button to clean the text.
-4. Use the "Copy to Clipboard" button to copy the tidied text.
-5. Explore batch processing by uploading a text file. (This feature is still not optimal, more improvement needed)
+1. Paste your text from PDFs or other sources into the input area.
+2. Select the desired tidying options.
+3. Choose or customize AI prompts to send along with your tidied text.
+4. Click "Tidy Text" to clean up the formatting.
+5. Use the "Copy Tidied Text" or "Download as Text File" options to save your work.
 
-## Disclosure
-
-This code was scripted and generated with the assistance of AI Claude. I am the prompter and have provided instructions for its creation. This approach is referred to as **Vibe Coding**.
-
-## License
-
-This project is open source and can be modified or extended for your specific needs. Feel free to contribute. 
-
+### Key Changes in the Update:
+- **Feature Addition**: Highlighted the new AI prompt selection feature.
+- **Dark Mode Improvement**: Mentioned the improvements made to dark mode for better readability.
+- **Usage Instructions**: Provided clear steps on how to use the tool.
