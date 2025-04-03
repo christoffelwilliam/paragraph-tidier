@@ -6,6 +6,12 @@ A web tool for tidying and formatting text from various sources, created with th
 
 The **PDF Text Tidier for AI Chatbots** is a web-based application designed to clean and format text extracted from PDFs and other sources. This tool enhances the usability of text for AI applications by removing unnecessary formatting issues and providing additional features for better interaction with AI chatbots.
 
+## Reason for Development
+
+I created this program (with the help of AI) to address a challenge I faced while studying and taking notes from PDF textbooks. When I wanted to summarize specific paragraphs, I would copy and paste the text into an AI chatbot. However, the formatting was often messy, with excessive whitespace and tabs, which led to misunderstandings and inaccurate responses from the AI. To improve this, I made a webtool that tidies up the text and converts it into a text file format, making it easier to upload to the AI chatbot. I noticed that uploading the text file consistently produced the desired responses, unlike pasting the text directly. Additionally, I included a prompt selection feature at the beginning, allowing me to streamline the process since I often use the same prompt for text from PDFs. This tool simplifies the interaction with the AI chatbot, enhancing my study experience with textbooks.
+
+## Features
+
 ## Features
 
 - Advanced whitespace normalization
