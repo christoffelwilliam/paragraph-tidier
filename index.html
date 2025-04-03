@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Text Tidier for AI Chatbots</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f7fa;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .dark-mode {
+            background-color: #2c3e50;
+            color: #ecf0f1;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        h1 {
+            color: inherit; /* Use inherited color for dark mode */
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .text-area-container {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .text-box {
+            flex: 1;
+            min-width: 300px;
+        }
+        textarea {
+            width: 100%;
+            height: 300px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            resize: vertical;
+            box-sizing: border-box;
+            background-color: white; /* Default background */
+            color: #333; /* Default text color */
+        }
+        .dark-mode textarea {
+            background-color: #34495e; /* Dark mode background for textareas */
+            color: #ecf0f1; /* Dark mode text color */
+            border: 1px solid #1a2530; /* Dark mode border color */
+        }
+        .buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        button {
+            padding: 12px 24px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        button.secondary {
+            background-color: #7f8c8d;
+        }
+        button.secondary:hover {
+            background-color: #636e72;
+        }
+        .options {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+        }
+        .dark-mode .options {
+            background-color: #34495e; /* Dark mode background for options */
+        }
+        .option-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+        .option {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .copy-message {
+            color: #27ae60;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 0.3s;
+            height: 20px;
+            margin-bottom: 10px;
+        }
+        #downloadButton {
+            background-color: #27ae60;
+        }
+        #downloadButton:hover {
+            background-color: #219653;
+        }
+        .show {
+            opacity: 1;
+        }
+        .dark-mode-toggle {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 20px;
+        }
+        .prompt-selection {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="dark-mode-toggle">
+        <label>
+            <input type="checkbox" id="darkModeToggle">
+            Dark Mode
+        </label>
+    </div>
+    
+    <header>
+        <h1>PDF Text Tidier for AI Chatbots</h1>
+        <p>Paste text from PDFs, clean it up, and make it AI-chatbot friendly</p>
+    </header>
+    
+    <div class="container">
+        <div class="options">
+            <h3>Tidying Options</h3>
+            <div class="option-group">
+                <div class="option">
+                    <input type="checkbox" id="removeLineBreaks" checked>
+                    <label for="removeLineBreaks">Remove line breaks</label>
+                </div>
+                <div class="option">
+                    <input type="checkbox" id="normalizeSpaces" checked>
+                    <label for="normalizeSpaces">Normalize whitespace</label>
+                </div>
+                <div class="option">
+                    <input type="checkbox" id="fixHyphens" checked>
+                    <label for="fixHyphens">Fix hyphenated words</label>
+                </div>
+                <div class="option">
+                    <input type="checkbox" id="preserveParagraphs" checked>
+                    <label for="preserveParagraphs">Preserve paragraphs</label>
+                </div>
+                <div class="option">
+                    <input type="checkbox" id="removeHeaders">
+                    <label for="removeHeaders">Remove page headers/footers (experimental)</label>
+                </div>
+                <div class="option">
+                    <input type="checkbox" id="addSpaceBetweenSentences">
+                    <label for="addSpaceBetweenSentences">Ensure space between sentences</label>
+                </div>
+            </div>
+        </div>
+        
+        <div class="prompt-selection">
+            <h3>AI Prompt Selection</h3>
+            <p>Choose or customize prompts to send along with your tidied text to an AI chatbot:</p>
+            <div class="option-group">
+                <div class="option">
+                    <input type="checkbox" class="prompt-option" id="summarizeText" data-prompt="I want to summarize this text, making the summary easier to understand and engaging to the reader.">
+                    <label for="summarizeText">Summarize Text</label>
+                </div>
+                <div class="option">
+                    <input type="checkbox" class="prompt-option" id="keyNotes" data-prompt="I want to extract important key notes based on this text, highlighting the most important points without losing the accuracy of the context.">
+                    <label for="keyNotes">Key Notes</label>
+                </div>
+                <div class="option">
+                    <input type="checkbox" class="prompt-option" id="simplifiedExplanation" data-prompt="I want to make this text easier to understand, using analogies if applicable.">
+                    <label for="simplifiedExplanation">Simplified Explanation</label>
+                </div>
+                <div class="option">
+                    <input type="checkbox" class="prompt-option" id="memorizationAid" data-prompt="I want to rewrite this text to be more memorable and easier to learn.">
+                    <label for="memorizationAid">Memorization Aid</label>
+                </div>
+                <div class="option">
+                    <input type="checkbox" class="prompt-option" id="restructureEngage" data-prompt="I want to restructure this text to make it more engaging and interesting, adding elements to keep the reader focused.">
+                    <label for="restructureEngage">Restructure & Engage</label>
+                </div>
+                <div class="option">
+                    <input type="checkbox" class="prompt-option" id="practicalExamples" data-prompt="Please explain the main concepts in this text using simple language and provide real-world examples that illustrate these concepts.">
+                    <label for="practicalExamples">Practical Examples</label>
+                </div>
+                <div class="option">
+                    <input type="checkbox" class="prompt-option" id="mentalFramework" data-prompt="Create a visual mental map or framework from this text that organizes the main ideas and their relationships.">
+                    <label for="mentalFramework">Mental Framework</label>
+                </div>
+                <div class="option">
+                    <input type="checkbox" class="prompt-option" id="coreTakeaways" data-prompt="Identify and explain the 3-5 most important takeaways from this text that I should remember.">
+                    <label for="coreTakeaways">Core Takeaways</label>
+                </div>
+            </div>
+            <textarea id="customPrompt" class="prompt-textarea" placeholder="Selected prompts will appear here. You can edit them or write your own custom prompt..."></textarea>
+            <div class="buttons">
+                <button id="copyPromptButton" class="secondary">Copy Prompt + Text</button>
+                <button id="downloadPromptButton" class="secondary">Download Prompt + Text</button>
+            </div>
+        </div>
+        
+        <div class="text-area-container">
+            <div class="text-box">
+                <h3>Original Text (Paste from PDF)</h3>
+                <textarea id="inputText" placeholder="Paste your text from PDF here..."></textarea>
+            </div>
+            <div class="text-box">
+                <h3>Tidied Text (AI-Friendly)</h3>
+                <textarea id="outputText" placeholder="Tidied text will appear here..." readonly></textarea>
+            </div>
+        </div>
+        
+        <div class="copy-message" id="copyMessage">Text copied to clipboard!</div>
+        
+        <div class="buttons">
+            <button id="tidyButton">Tidy Text</button>
+            <button id="copyButton" class="secondary">Copy Tidied Text</button>
+            <button id="downloadButton" class="secondary">Download as Text File</button>
+            <button id="clearButton" class="secondary">Clear All</button>
+        </div>
+        
+        <div class="explanation">
+            <h3>Why This Helps with AI Chatbots</h3>
+            <p>When you copy text from PDFs, it often contains:</p>
+            <ul>
+                <li>Hard line breaks that split sentences unnaturally</li>
+                <li>Hyphenated words that should be joined</li>
+                <li>Inconsistent spacing and formatting</li>
+                <li>Headers, footers, and page numbers mixed into the text</li>
+            </ul>
+            <p>These issues can cause AI chatbots to misinterpret the text structure, resulting in incomplete analyses or summaries. This tool fixes these problems by:</p>
+            <ul>
+                <li>Removing unnecessary line breaks while preserving paragraph breaks</li>
+                <li>Joining hyphenated words at line breaks</li>
+                <li>Normalizing whitespace throughout the text</li>
+                <li>Attempting to remove page headers and footers</li>
+            </ul>
+            <p>The result is a clean, continuous text that AI chatbots can process properly without requiring you to save it as a separate document first.</p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const inputText = document.getElementById('inputText');
+            const outputText = document.getElementById('outputText');
+            const tidyButton = document.getElementById('tidyButton');
+            const copyButton = document.getElementById('copyButton');
+            const downloadButton = document.getElementById('downloadButton');
+            const clearButton = document.getElementById('clearButton');
+            const copyMessage = document.getElementById('copyMessage');
+            const darkModeToggle = document.getElementById('darkModeToggle');
+            const customPrompt = document.getElementById('customPrompt');
+            const copyPromptButton = document.getElementById('copyPromptButton');
+            const downloadPromptButton = document.getElementById('downloadPromptButton');
+            const promptOptions = document.querySelectorAll('.prompt-option');
+
+            // Check for saved dark mode preference
+            if (localStorage.getItem('darkMode') === 'enabled') {
+                document.body.classList.add('dark-mode');
+                darkModeToggle.checked = true;
+            }
+
+            // Dark mode toggle
+            darkModeToggle.addEventListener('change', () => {
+                document.body.classList.toggle('dark-mode');
+                localStorage.setItem('darkMode', darkModeToggle.checked ? 'enabled' : 'disabled');
+            });
+
+            // Update custom prompt based on selected prompts
+            promptOptions.forEach(option => {
+                option.addEventListener('change', function() {
+                    const selectedPrompts = Array.from(promptOptions)
+                        .filter(opt => opt.checked)
+                        .map(opt => opt.getAttribute('data-prompt'));
+                    customPrompt.value = selectedPrompts.join('\n\n');
+                });
+            });
+
+            // Copy prompt + text button
+            copyPromptButton.addEventListener('click', function() {
+                if (!customPrompt.value.trim() || !outputText.value.trim()) return;
+
+                const combinedText = `${customPrompt.value.trim()}\n\n${outputText.value.trim()}`;
+
+                // Create a temporary textarea to hold the text
+                const tempTextarea = document.createElement('textarea');
+                tempTextarea.value = combinedText;
+                document.body.appendChild(tempTextarea);
+
+                // Select and copy
+                tempTextarea.select();
+                document.execCommand('copy');
+
+                // Clean up
+                document.body.removeChild(tempTextarea);
+
+                // Show copy message
+                copyMessage.textContent = "Prompt + Text copied to clipboard!";
+                copyMessage.classList.add('show');
+                setTimeout(() => {
+                    copyMessage.classList.remove('show');
+                }, 2000);
+            });
+
+            // Download prompt + text button
+            downloadPromptButton.addEventListener('click', function() {
+                if (!customPrompt.value.trim() || !outputText.value.trim()) return;
+
+                const combinedText = `${customPrompt.value.trim()}\n\n${outputText.value.trim()}`;
+
+                // Create a Blob with the text content
+                const blob = new Blob([combinedText], { type: 'text/plain' });
+
+                // Create a temporary URL for the Blob
+                const url = URL.createObjectURL(blob);
+
+                // Create a download link
+                const a = document.createElement('a');
+                a.href = url;
+
+                // Get current date and time for filename
+                const now = new Date();
+                const timestamp = now.toISOString().replace(/[:.]/g, '-').substring(0, 19);
+                a.download = `prompt-and-text-${timestamp}.txt`;
+
+                // Trigger the download
+                document.body.appendChild(a);
+                a.click();
+
+                // Clean up
+                setTimeout(() => {
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                }, 100);
+            });
+
+            // Process text when Tidy button is clicked
+            tidyButton.addEventListener('click', function() {
+                const text = inputText.value;
+                if (text.trim() === '') {
+                    outputText.value = '';
+                    return;
+                }
+
+                const options = {
+                    removeLineBreaks: document.getElementById('removeLineBreaks').checked,
+                    normalizeSpaces: document.getElementById('normalizeSpaces').checked,
+                    fixHyphens: document.getElementById('fixHyphens').checked,
+                    preserveParagraphs: document.getElementById('preserveParagraphs').checked,
+                    removeHeaders: document.getElementById('removeHeaders').checked,
+                    addSpaceBetweenSentences: document.getElementById('addSpaceBetweenSentences').checked,
+                };
+
+                outputText.value = tidyParagraph(text, options);
+            });
+
+            // Copy text to clipboard
+            copyButton.addEventListener('click', function() {
+                if (outputText.value.trim() === '') return;
+
+                outputText.select();
+                document.execCommand('copy');
+
+                // Show the copy message
+                copyMessage.textContent = "Text copied to clipboard!";
+                copyMessage.classList.add('show');
+                setTimeout(() => {
+                    copyMessage.classList.remove('show');
+                }, 2000);
+            });
+
+            // Download tidied text as a file
+            downloadButton.addEventListener('click', function() {
+                if (outputText.value.trim() === '') return;
+
+                // Create a Blob with the text content
+                const blob = new Blob([outputText.value], { type: 'text/plain' });
+
+                // Create a temporary URL for the Blob
+                const url = URL.createObjectURL(blob);
+
+                // Create a download link
+                const a = document.createElement('a');
+                a.href = url;
+
+                // Get current date and time for filename
+                const now = new Date();
+                const timestamp = now.toISOString().replace(/[:.]/g, '-').substring(0, 19);
+                a.download = `tidied-text-${timestamp}.txt`;
+
+                // Trigger the download
+                document.body.appendChild(a);
+                a.click();
+
+                // Clean up
+                setTimeout(() => {
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                }, 100);
+            });
+
+            // Clear all text
+            clearButton.addEventListener('click', function() {
+                inputText.value = '';
+                outputText.value = '';
+                customPrompt.value = '';
+                promptOptions.forEach(opt => opt.checked = false);
+            });
+
+            // Main tidying function
+            function tidyParagraph(text, options) {
+                let result = text;
+
+                // Step 1: Preserve paragraph breaks if needed
+                if (options.preserveParagraphs) {
+                    result = result.replace(/\n\s*\n/g, '\n[PARAGRAPH_BREAK]\n');
+                }
+
+                // Step 2: Fix hyphenated words at line breaks
+                if (options.fixHyphens) {
+                    result = result.replace(/(\w+)-\n(\w+)/g, '$1$2');
+                }
+
+                // Step 3: Remove single line breaks if needed
+                if (options.removeLineBreaks) {
+                    result = result.replace(/(?<!\n)\n(?!\n)/g, ' ');
+                }
+
+                // Step 4: Normalize whitespace
+                if (options.normalizeSpaces) {
+                    result = result.replace(/\s+/g, ' ');
+                }
+
+                // Step 5: Restore paragraph breaks
+                if (options.preserveParagraphs) {
+                    result = result.replace(/\[PARAGRAPH_BREAK\]/g, '\n\n');
+                }
+
+                // Step 6: Remove headers/footers (experimental)
+                if (options.removeHeaders) {
+                    const lines = result.split('\n');
+                    result = lines.filter(line => {
+                        const trimmed = line.trim();
+                        return trimmed.length > 20 || trimmed === '' || /[.!?]/.test(trimmed);
+                    }).join('\n');
+                }
+
+                // Step 7: Ensure space between sentences
+                if (options.addSpaceBetweenSentences) {
+                    result = result.replace(/([.!?])([A-Z])/g, '$1 $2');
+                }
+
+                return result.trim();
+            }
+        });
+    </script>
+</body>
+</html>
