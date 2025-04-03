@@ -26,6 +26,10 @@ The **PDF Text Tidier for AI Chatbots** is a web-based application designed to c
 4. Click "Tidy Text" to clean up the formatting.
 5. Use the "Copy Tidied Text" or "Download as Text File" options to save your work.
 
+## Disclosure
+
+This code was generated with the assistance of AI, and I am just the prompter. The tool leverages AI capabilities to enhance text tidying and formatting processes.
+
 ### Key Changes in the Update:
 - **Feature Addition**: Highlighted the new AI prompt selection feature.
 - **Dark Mode Improvement**: Mentioned the improvements made to dark mode for better readability.
