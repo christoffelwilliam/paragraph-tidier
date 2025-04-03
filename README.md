@@ -30,6 +30,7 @@ I created this program (with the help of AI) to address a challenge I faced whil
 3. Choose or customize AI prompts to send along with your tidied text.
 4. Click "Tidy Text" to clean up the formatting.
 5. Use the "Copy Tidied Text" or "Download as Text File" options to save your work.
+6. You can also use the "Copy Prompt + Text" or "Download Prompt + Text" options to include the AI prompts into the tidied text or tidied text in text file format
 
 ## Disclosure
 
